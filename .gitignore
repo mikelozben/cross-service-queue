@@ -1,0 +1,14 @@
+.idea/
+
+###> symfony/framework-bundle ###
+/app/service/.env.local
+/app/service/.env.local.php
+/app/service/.env.*.local
+/app/service/config/secrets/
+/app/service/public/bundles/
+/app/service/var/
+/app/service/vendor/
+###< symfony/framework-bundle ###
+
+/app/service/auth.json
+

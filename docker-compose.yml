@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+    service-1:
+        container_name: 'service-1'
+        user: "${UID}:${GUID}"
+        build:
+            context: docker/php/
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - ./app/service:/var/www
+        command: bash -c "php /var/www/bin/console service:create-event"
+        environment:
+            - SERVICE_ID=1
+        depends_on:
+            - redis
+
+    service-2:
+        container_name: 'service-2'
+        user: "${UID}:${GUID}"
+        build:
+            context: docker/php/
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - ./app/service:/var/www
+        command: bash -c "php /var/www/bin/console messenger:consume async"
+        environment:
+            - SERVICE_ID=2
+        depends_on:
+            - redis
+            - service-1
+
+    redis:
+        container_name: 'redis'
+        image: "redis:alpine"
+        command: redis-server
+        ports:
+            - "6379:6379"
